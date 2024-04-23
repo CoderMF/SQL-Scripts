@@ -13,7 +13,14 @@ CREATE VIEW [COMMWEB].[VIEW_COMM_IA_CODE] AS
 
 	cross apply GMPCommission.dbo.udf_GetAdvisorMappingsByUserID_CW('ADELAIDE\' + WinLogin,0) 
 
+	-- following ETL process to ensure fast load time when being used
+INSERT INTO [COMMWEB].[COMM_IA_CODE]
+	(IA_CODE, IA_CODE_RWL,EMP_ID,WIN_DOMAIN,WIN_LOGIN,EMP_EMAIL)
+	SELECT
+		IACode, IACd_RWL, EmployeeID, WinDomain, WinLogin, Email
+	FROM
+		[COMMWEB].[VIEW_COMM_IA_CODE];
 
-drop view VIEW_COMMWEB_IA_CODE
+SELECT * FROM [COMMWEB].[VIEW_COMM_IA_CODE] where winLogin = 'jbrumer'
 
-SELECT * FROM [COMMWEB].[VIEW_COMM_IA_CODE] where winLogin = 'wwoo'
+select * from [COMMWEB].[COMM_IA_CODE]
